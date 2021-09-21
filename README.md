@@ -1,7 +1,7 @@
 EPAA
 ==============================
 
-TAED2
+TAED2 Project: Meaningful insight extraction from git commit texts.
 
 Project Organization
 ------------
