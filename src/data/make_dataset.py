@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+import os
 import click
 import logging
+import sqlite3
+import pandas as pd
+from tqdm import tqdm
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
-
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=True))
@@ -14,6 +17,30 @@ def main(input_filepath, output_filepath):
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
+
+    #create output folder
+    if not Path(output_filepath).exists():
+        Path(output_filepath).mkdir()
+
+    # Create your connection.
+    con = sqlite3.connect(input_filepath)
+
+    # creating cursor
+    cur = con.cursor()
+
+    # reading all table names
+    table_list = [a[0] for a in cur.execute("SELECT name FROM sqlite_master WHERE type = 'table'")]
+    # here is you table list
+    print(table_list)
+
+    for table in tqdm(table_list):
+        df = pd.read_sql_query("SELECT * FROM " + table, con)
+        df.to_csv(os.path.join(output_filepath,table+'.csv'),index = False)
+
+    # Be sure to close the connection
+    con.close()
+
+
 
 
 if __name__ == '__main__':
