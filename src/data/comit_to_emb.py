@@ -1,10 +1,12 @@
+import click
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer('all-mpnet-base-v2')
-
+#model = SentenceTransformer('all-mpnet-base-v2')
+model = SentenceTransformer('all-MiniLM-L6-v2')
 @click.command()
 @click.argument('input_path', type=click.Path(exists=True))
 @click.argument('output_path', type=click.Path())

@@ -54,4 +54,46 @@ Project Organization
 
 --------
 
+## Requirements
+
+## Data Preparation
+
+### Initial data collection
+First of all we need to download the raw dataset from [The Technical Debt Dataset](https://github.com/clowee/The-Technical-Debt-Dataset/releases/tag/2.0) in `.db` format.
+
+Then we can generate the `.csv` for all the tables in the database with:
+
+```bash
+python3 src/data/make_dataset.py path/to/td_V2.db path/to/output_folder
+```
+
+After this, in `output_folder` we will have the following `.csv` files:
+
+    output_folder
+    ├── GIT_COMMITS_CHANGES.csv
+    ├── GIT_COMMITS.csv
+    ├── JIRA_ISSUES.csv
+    ├── PROJECTS.csv
+    ├── REFACTORING_MINER.csv
+    ├── SONAR_ANALYSIS.csv
+    ├── SONAR_ISSUES.csv
+    ├── SONAR_MEASURES.csv
+    ├── SONAR_RULES.csv
+    └── SZZ_FAULT_INDUCING_COMMITS.csv
+
+## Data Preparation
+Now that we have our raw data in a suitable format, we can preparate it. First of all we take the `.csv` and generate the cleaned dataset from `GIT_COMMITS.csv`, `SONAR_ANALYSIS.csv` and `SONAR_MEASURES.csv`:
+
+```bash
+python3 src/data/make_dataset.py path/to/input_folder path/to/output_folder
+```
+
+Where `input_folder` is the root folder where all the `.csv` are stored and `output_folder` is the root folder where the final dataset `predictionDB.csv` will be stored.
+
+Once we have `predictionDB.csv` we need to generate the sentence embeddings, one for each commit message. This can be done with:
+
+```bash
+python3 src/data/commit_to_emb.py path/to/input_folder path/to/output_folder
+```
+
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
