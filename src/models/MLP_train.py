@@ -91,7 +91,7 @@ if __name__ == '__main__':
     mean_train_losses = []
     mean_valid_losses = []
     valid_acc_list = []
-    epochs = 15
+    epochs = 30
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model.to(device)
@@ -133,3 +133,4 @@ if __name__ == '__main__':
         mean_train_losses.append(np.mean(train_losses))
         mean_valid_losses.append(np.mean(valid_losses))
         print('epoch : {}, train loss : {:.4f}, valid loss : {:.4f}'         .format(epoch+1, mean_train_losses[-1], mean_valid_losses[-1]))
+    torch.save(model,'weights.pt')
