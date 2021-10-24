@@ -102,8 +102,8 @@ if __name__ == '__main__':
         valid_losses = []
         for i, (embeddings, labels) in tqdm(enumerate(train_loader)):
 
-            embeddings.to(device)
-            labels.to(device)
+            embeddings = embeddings.to(device)
+            labels = labels.to(device)
             optimizer.zero_grad()
 
             outputs = model(embeddings)
@@ -119,6 +119,8 @@ if __name__ == '__main__':
         total = 0
         with torch.no_grad():
             for i, (embeddings, labels) in tqdm(enumerate(valid_loader)):
+                embeddings = embeddings.to(device)
+                labels = labels.to(device)
                 outputs = model(embeddings)
                 loss = loss_fn(outputs.squeeze(0), labels)
 
