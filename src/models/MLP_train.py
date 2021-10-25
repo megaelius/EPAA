@@ -32,7 +32,8 @@ class commits_dataset(Dataset):
 
     def __getitem__(self, index):
         h = self.hashes[index]
-        target = self.df[self.df['COMMIT_HASH'] == h][['inc_complexity','inc_violations','inc_development_cost']].values.tolist()[0]
+        #target = self.df[self.df['COMMIT_HASH'] == h][['inc_complexity','inc_violations','inc_development_cost']].values.tolist()[0]
+        target = self.df[self.df['COMMIT_HASH'] == h]['inc_complexity'].values.tolist()[0]
         #embedding = np.load(os.path.join(self.embeddings_path,h + '.npy'))
         embedding = self.embeddings[index]
         return torch.Tensor(embedding),torch.Tensor(target)
@@ -43,7 +44,7 @@ class MultilayerPerceptron(nn.Module):
         super().__init__()
         self.lin1 = nn.Linear(384, 1024, bias=True)
         self.lin2 = nn.Linear(1024, 120, bias=True)
-        self.lin3 = nn.Linear(120, 3, bias=True)
+        self.lin3 = nn.Linear(120, 1, bias=True)
 
     def forward(self, xb):
         x = xb.float()
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     mean_train_losses = []
     mean_valid_losses = []
     valid_acc_list = []
-    epochs = 30
+    epochs = 50
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model.to(device)
