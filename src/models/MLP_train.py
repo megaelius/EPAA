@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
-    loss_fn = nn.MSELoss()
+    loss_fn = nn.SmoothL1Loss()
 
 
     mean_train_losses = []
