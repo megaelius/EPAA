@@ -43,15 +43,17 @@ class MultilayerPerceptron(nn.Module):
     def __init__(self):
         super().__init__()
         self.lin1 = nn.Linear(384, 1024, bias=True)
-        self.lin2 = nn.Linear(1024, 120, bias=True)
-        self.lin3 = nn.Linear(120, 1, bias=True)
+        self.lin2 = nn.Linear(1024, 1024, bias=True)
+        self.lin3 = nn.Linear(1024, 120, bias=True)
+        self.lin4 = nn.Linear(120, 1, bias=True)
 
     def forward(self, xb):
         x = xb.float()
         #x = xb.view(250, -1)
         x = F.relu(self.lin1(x))
         x = F.relu(self.lin2(x))
-        return self.lin3(x)
+        x = F.relu(self.lin3(x))
+        return self.lin4(x)
 
 if __name__ == '__main__':
     predictionDB_path = "../../data/processed/predictionDB.csv"
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     print(model)
 
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     loss_fn = nn.SmoothL1Loss()
 
 
