@@ -33,7 +33,7 @@ class commits_dataset(Dataset):
     def __getitem__(self, index):
         h = self.hashes[index]
         #target = self.df[self.df['COMMIT_HASH'] == h][['inc_complexity','inc_violations','inc_development_cost']].values.tolist()[0]
-        target = self.df[self.df['COMMIT_HASH'] == h]['inc_complexity'].values.tolist()[0]
+        target = self.df[self.df['COMMIT_HASH'] == h]['inc_complexity'].values.tolist()
         #embedding = np.load(os.path.join(self.embeddings_path,h + '.npy'))
         embedding = self.embeddings[index]
         return torch.Tensor(embedding),torch.Tensor(target)
