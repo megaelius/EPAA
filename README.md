@@ -111,6 +111,6 @@ cd src/models
 python3 MLP_train.py --output_folder ../../models/Model_name
 ```
 
-In `models/Model_name` folder, one will find the weights of the pytorch model (`weights.pt`), the loss curves (`Loss.png`) and accuracy curves (`Accuracy.png`) of both training and validation sets. 
+In `models/Model_name` folder, one will find the weights of the pytorch model (`weights.pt`), the loss curves (`Loss.png`) and accuracy curves (`Accuracy.png`) of both training and validation sets.
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
