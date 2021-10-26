@@ -15,7 +15,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import random
 
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -59,9 +58,9 @@ class MultilayerPerceptron(nn.Module):
         x = xb.float()
         #x = xb.view(250, -1)
         x = F.relu(self.lin1(x))
-        x = self.drop(x)
+        #x = self.drop(x)
         x = F.relu(self.lin2(x))
-        x = self.drop(x)
+        #x = self.drop(x)
         #x = F.relu(self.lin3(x))
         return self.lin3(x)
 
@@ -110,7 +109,7 @@ if __name__ == '__main__':
     print(model)
 
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001, weight_decay = 0.0005)
     #loss_fn = nn.SmoothL1Loss()
     loss_fn = nn.BCEWithLogitsLoss()
 
@@ -183,7 +182,8 @@ if __name__ == '__main__':
         plt.close()
         plt.plot(x,train_acc)
         plt.plot(x,valid_acc)
-        plt.legend(['Train','Valid'])
+        plt.axhline(y=sum(dataset.df['inc_complexity_binary'] == 0)/len(dataset), color='r', linestyle='-')
+        plt.legend(['Train','Valid','Frequency of 0s'])
         plt.savefig(os.path.join(args.output_path,'Accuracy.png'))
         plt.close()
         print('epoch : {}, train loss : {:.4f}, valid loss : {:.4f}'.format(epoch+1, mean_train_losses[-1], mean_valid_losses[-1]))
