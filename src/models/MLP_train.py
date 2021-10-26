@@ -113,13 +113,13 @@ if __name__ == '__main__':
     #loss_fn = nn.SmoothL1Loss()
     loss_fn = nn.BCEWithLogitsLoss()
 
-
+    best_loss = float('inf')
     mean_train_losses = []
     mean_valid_losses = []
     train_acc = []
     valid_acc = []
 
-    epochs = 20
+    epochs = 50
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model.to(device)
@@ -174,6 +174,9 @@ if __name__ == '__main__':
         valid_acc.append(acc)
         mean_train_losses.append(np.mean(train_losses))
         mean_valid_losses.append(np.mean(valid_losses))
+        if mean_valid_losses[-1] < best_loss:
+            best_loss = mean_valid_losses[-1]
+            torch.save(model,os.path.join(args.output_path,'best_weights.pt'))
         x = list(range(len(mean_train_losses)))
         plt.plot(x,mean_train_losses)
         plt.plot(x,mean_valid_losses)
@@ -187,4 +190,4 @@ if __name__ == '__main__':
         plt.savefig(os.path.join(args.output_path,'Accuracy.png'))
         plt.close()
         print('epoch : {}, train loss : {:.4f}, valid loss : {:.4f}'.format(epoch+1, mean_train_losses[-1], mean_valid_losses[-1]))
-    torch.save(model,os.path.join(args.output_path,'weights.pt'))
+    torch.save(model,os.path.join(args.output_path,'last_weights.pt'))
