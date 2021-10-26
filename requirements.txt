@@ -9,7 +9,7 @@ pandas numpy
 tqdm
 pathlib
 numpy
-sklearn
+scikit-learn
 torch
 matplotlib
 glob

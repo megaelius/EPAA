@@ -56,6 +56,10 @@ Project Organization
 
 ## Requirements
 
+```bash
+pip3 install -r requirements.txt
+```
+
 ## Initial data collection
 First of all we need to download the raw dataset from [The Technical Debt Dataset](https://github.com/clowee/The-Technical-Debt-Dataset/releases/tag/2.0) in `.db` format.
 
@@ -93,5 +97,20 @@ Once we have `predictionDB.csv` we need to generate the sentence embeddings, one
 ```bash
 python3 src/data/commit_to_emb.py path/to/input_folder path/to/output_folder
 ```
+
+## Clustering analysis
+
+In order to replicate our results of the exploratory clustering analysis one can run the notebook in `notebooks/Clustering.ipynb`
+
+## Code metrics predictions
+
+In order to replicate our results for the binary classification (Increases / Doesn't increase) of each variable, one can run the following python script:
+
+```bash
+cd src/models
+python3 MLP_train.py --output_folder ../../models/Model_name
+```
+
+In `models/Model_name` folder, one will find the weights of the pytorch model (`weights.pt`), the loss curves (`Loss.png`) and accuracy curves (`Accuracy.png`) of both training and validation sets. 
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
