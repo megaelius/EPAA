@@ -55,6 +55,16 @@ def main(input_filepath, output_filepath):
     clean_db_merged = db_merged.dropna() #we delete al the NAs in the table
     final_db = clean_db_merged[["PROJECT_ID", "COMMIT_HASH", "COMMIT_MESSAGE", "AUTHOR", "COMMITTER_DATE", "inc_complexity", "inc_violations", "inc_development_cost"]]
 
+    clean_column = [None]*len(final_db["COMMIT_MESSAGE"])
+    for i in range(len(final_db["COMMIT_MESSAGE"])):
+        clean = ''
+        for j,s in enumerate(final_db["COMMIT_MESSAGE"].iloc[i].split()[:-3]):
+            if j!=0:
+                clean+= ' '
+            clean+=s
+        clean_column[i] = clean
+    final_db["CLEAN_CMS"] = clean_column
+
     final_db.to_csv(os.path.join(output_filepath,'predictionDB.csv'), index='False') #export!
 
 if __name__ == '__main__':
