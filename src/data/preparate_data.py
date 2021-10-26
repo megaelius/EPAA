@@ -63,6 +63,8 @@ def main(input_filepath, output_filepath):
                 clean+= ' '
             clean+=s
         clean_column[i] = clean
+        if not len(clean):
+            clean_column[i] = final_db["COMMIT_MESSAGE"]
     final_db["CLEAN_CMS"] = clean_column
 
     final_db.to_csv(os.path.join(output_filepath,'predictionDB.csv'), index='False') #export!
