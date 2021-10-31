@@ -1,9 +1,10 @@
-import numpy as np
-import pandas as pd
+import os
 import math
 import click
 import logging
-import os
+import numpy as np
+import pandas as pd
+
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=True))
