@@ -1,7 +1,7 @@
 EPAA
 ==============================
 
-TAED2 Project: Meaningful insight extraction from git commit texts.
+TAED2 Project: Meaningful insight extraction from git commit texts. Project done by [Andrea Garcia Valdés](https://github.com/andreagarz), [Pau Bernat Rodríguez](https://github.com/paubernat), [Àlex Martí Guiu](https://github.com/alexmartiguiu) and [Elías Abad Rocamora](https://github.com/megaelius)
 
 Project Organization
 ------------
@@ -31,23 +31,20 @@ Project Organization
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to download or generate data
     │   │   └── make_dataset.py
+    │   │   └── prepare_data.py
     │   │
     │   ├── features       <- Scripts to turn raw data into features for modeling
     │   │   └── build_features.py
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │   └── models         <- Scripts to train models and then use trained models to make
+    │       │                 predictions
+    │       ├── predict_model.py
+    │       └── train_model.py
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
@@ -61,7 +58,18 @@ pip3 install -r requirements.txt
 ```
 
 ## Initial data collection
-First of all we need to download the raw dataset from [The Technical Debt Dataset](https://github.com/clowee/The-Technical-Debt-Dataset/releases/tag/2.0) in `.db` format.
+
+In our release we include all the necessary data ready to train models and perform cluster analysis:
+
+```
+predictionDB.csv
+embeddings.zip
+embeddings2.zip
+```
+
+One just needs to put this data in data/processed and unzip the .zip files to be able to run all the modelling and analysis scripts.
+
+If we want to replicate the data generation processed, first of all we need to download the raw dataset from [The Technical Debt Dataset](https://github.com/clowee/The-Technical-Debt-Dataset/releases/tag/2.0) in `.db` format.
 
 Then we can generate the `.csv` for all the tables in the database with:
 
@@ -87,7 +95,7 @@ After this, in `output_folder` we will have the following `.csv` files:
 Now that we have our raw data in a suitable format, we can preparate it. First of all we take the `.csv` and generate the cleaned dataset from `GIT_COMMITS.csv`, `SONAR_ANALYSIS.csv` and `SONAR_MEASURES.csv`:
 
 ```bash
-python3 src/data/preparate_data.py path/to/input_folder path/to/output_folder
+python3 src/data/prepare_data.py path/to/input_folder path/to/output_folder
 ```
 
 Where `input_folder` is the root folder where all the `.csv` are stored and `output_folder` is the root folder where the final dataset `predictionDB.csv` will be stored.
@@ -95,8 +103,12 @@ Where `input_folder` is the root folder where all the `.csv` are stored and `out
 Once we have `predictionDB.csv` we need to generate the sentence embeddings, one for each commit message. This can be done with:
 
 ```bash
-python3 src/data/commit_to_emb.py path/to/input_folder path/to/output_folder
+python3 src/features/build_features.py path/to/input_folder path/to/output_folder
 ```
+
+## Embedding analysis
+
+In order to play with the embedding encoder, one can run the notebook in `notebooks/embeddings_insights.ipynb`
 
 ## Clustering analysis
 
@@ -108,7 +120,7 @@ In order to replicate our results for the binary classification (Increases / Doe
 
 ```bash
 cd src/models
-python3 MLP_train.py --output_folder ../../models/Model_name
+python3 train_model.py --output_folder ../../models/Model_name
 ```
 
 In `models/Model_name` folder, one will find the weights of the pytorch model (`weights.pt`), the loss curves (`Loss.png`) and accuracy curves (`Accuracy.png`) of both training and validation sets.
