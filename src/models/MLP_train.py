@@ -54,9 +54,7 @@ class MultilayerPerceptron(nn.Module):
         self.lin3 = nn.Linear(120, 1, bias=True)
         self.drop = nn.Dropout(0.5)
 
-    def forward(self, xb):
-        x = xb.float()
-        #x = xb.view(250, -1)
+    def forward(self, x):
         x = F.relu(self.lin1(x))
         #x = self.drop(x)
         x = F.relu(self.lin2(x))
@@ -119,7 +117,7 @@ if __name__ == '__main__':
     train_acc = []
     valid_acc = []
 
-    epochs = 50
+    epochs = 20
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model.to(device)
